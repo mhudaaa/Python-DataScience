@@ -46,5 +46,12 @@ import matplotlib.pyplot as plt
 # plt.show()
 # ----------------------------------------------------------------------------------------------
 
-mhs = pd.DatetimeIndex(db.mahasiswa['LastAccess']).hour.value_counts().head(10)
-print(mhs)
+# RATA-RATA WAKTU AKSES MAHASISWA
+mhs = pd.DatetimeIndex(db.mahasiswa['LastAccess']).hour.value_counts().reset_index().sort_values('index')
+waktu = pd.DataFrame({
+    'waktu1' : np.sum(mhs[:6].LastAccess),
+    'waktu2' : np.sum(mhs[6:12].LastAccess),
+    'waktu3' : np.sum(mhs[12:18].LastAccess),
+    'waktu4' : np.sum(mhs[18:24].LastAccess)
+}, index=[0])
+print(waktu)

@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 # ----------------------------------------------------------------------------------------------
 # JUMLAH AKSES SHARE ITS 5 TAHUN TERAKHIR
 # ----------------------------------------------------------------------------------------------
-"""
 # --- Akses Dosen & Mahasiswa
 akses = pd.DataFrame({
     'AksesDosen' : pd.DatetimeIndex(db.dosen['LastAccess']).year.value_counts().head(5),
@@ -26,7 +25,6 @@ func.setPlotText(totalAkses, x=0, y=100, halign='center')
 plt.yticks(np.arange(0, 14000, 2000))
 func.showPlot(title='Jumlah akses Share ITS 5 tahun terakhir', xlabel='Tahun', ylabel='Jumlah Akses')
 plt.show()
-"""
 # ----------------------------------------------------------------------------------------------
 
 
@@ -73,20 +71,24 @@ func.showPlot(title='Persentase akses Share ITS Mahasiswa pada tahun 2018', xlab
 
 
 # ----------------------------------------------------------------------------------------------
-# RATA-RATA WAKTU AKSES MAHASISWA
+# WAKTU AKSES SHARE ITS
 # ----------------------------------------------------------------------------------------------
-"""
-mhs = pd.DatetimeIndex(db.mahasiswa['LastAccess']).hour.value_counts().reset_index().sort_values('index')
-waktuAkses = pd.DataFrame({
-    'waktu' : ['00:00 - 05:59', '06:00 - 11:59', '12:00 - 17:59', '18:00 - 23:59'],
-    'jumlah' : [np.sum(mhs[:6].LastAccess), np.sum(mhs[6:12].LastAccess), np.sum(mhs[12:18].LastAccess), np.sum(mhs[18:24].LastAccess)]
-})
-waktuAkses.plot.bar(rot=0)
-for i, v in enumerate(waktuAkses['jumlah']):
-    plt.text(i, v-500, v, horizontalalignment='center', color='white', fontweight='bold')
-plt.xticks(np.arange(4), waktuAkses['waktu'])
-plt.ylabel('Jumlah Akses')
-plt.xlabel('Waktu Akses')
-plt.show()
-"""
+def waktuAkses(data, barTitle, barColor):
+    role = pd.DatetimeIndex(data['LastAccess']).hour.value_counts().reset_index().sort_values('index')
+    waktuAkses = pd.DataFrame({
+        'waktu': ['00:00 - 05:59', '06:00 - 11:59', '12:00 - 17:59', '18:00 - 23:59'],
+        'jumlahAkses': [np.sum(role[:6].LastAccess), np.sum(role[6:12].LastAccess), np.sum(role[12:18].LastAccess), np.sum(role[18:24].LastAccess)]
+    })
+    waktuAkses.plot.bar(rot=0, color=barColor)
+    func.setPlotText(waktuAkses.jumlahAkses, x=0, y=0, halign='center', color='black')
+    plt.xticks(np.arange(4), waktuAkses['waktu'])
+
+    func.showPlot(title=barTitle, xlabel='Waktu Akses', ylabel='Jumlah Akses')
+    return role
+
+# Waktu Akses Mahasiswa
+waktuAkses(db.mahasiswa, barTitle='Waktu Akses Share ITS Mahasiswa', barColor='#FF7F0E')
+
+# Waktu Akses Dosen
+waktuAkses(db.dosen, barTitle='Waktu Akses Share ITS Dosen', barColor='#1F77B4')
 # ----------------------------------------------------------------------------------------------

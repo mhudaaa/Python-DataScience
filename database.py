@@ -23,5 +23,3 @@ mahasiswa = readSql('dbo.Mahasiswa')
 # Convert LastAccess column to DateTime Type
 convertDate(dosen)
 convertDate(mahasiswa)
-
-# fakultas = dosen['Fakultas'].unique()
